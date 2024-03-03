@@ -4,10 +4,10 @@ import { icons } from "@/utils/icons";
 import { ModelBase } from "../../components";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import ButtonBase from "../button/Button";
-import { findRoomByConditionApi } from "@/apis/findRoomByCondition";
-import { useDispatch } from "react-redux";
 import { doGetRoomByCondition } from "@/store/slices/roomSlice";
-
+import { useAppSelector } from "@/hooks/reduxHook";
+import formatNumberToPrice from "@/helpers/formatNumberToPrice";
+import { useAppDispatch } from "@/hooks/reduxHook";
 const FindRoom = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modelCurrent, setModelCurrent] = useState("");
@@ -15,12 +15,14 @@ const FindRoom = () => {
   const pathname = usePathname();
   const router = useRouter();
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const district = searchParams.get("quan");
   const minPrice = searchParams.get("tu");
   const maxPrice = searchParams.get("den");
   const person = searchParams.get("so-nguoi");
+
+  const { isLoading } = useAppSelector((state) => state.room);
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -61,10 +63,16 @@ const FindRoom = () => {
         <div className="w-[24%] flex gap-4 items-center px-[1rem] justify-between bg-white h-full rounded-xl">
           <div className="flex justify-center items-center gap-2">
             <div>
-              <GiPriceTag size={24}></GiPriceTag>
+              <GiPriceTag size={24} color="gray"></GiPriceTag>
             </div>
             <div>
-              <span>Chọn giá</span>
+              <span>
+                {minPrice && maxPrice
+                  ? `${formatNumberToPrice(
+                      parseInt(minPrice)
+                    )} - ${formatNumberToPrice(parseInt(maxPrice))}`
+                  : "Chọn giá"}
+              </span>
             </div>
           </div>
           <div
@@ -82,7 +90,7 @@ const FindRoom = () => {
         <div className="w-[24%] overflow-hidden flex gap-4 items-center px-[1rem] justify-between bg-white h-full rounded-xl">
           <div className="flex justify-center items-center gap-2">
             <div>
-              <MdLocationOn size={24}></MdLocationOn>
+              <MdLocationOn color="gray" size={24}></MdLocationOn>
             </div>
             <div>
               <input
@@ -91,6 +99,7 @@ const FindRoom = () => {
                     pathname + "?" + createQueryString("quan", e.target.value)
                   );
                 }}
+                defaultValue={district ? district : ""}
                 placeholder="Nhập quận"
                 className="outline-none text-gray-400"
               ></input>
@@ -105,7 +114,7 @@ const FindRoom = () => {
         <div className="w-[24%] flex overflow-hidden gap-4 items-center px-[1rem] justify-between bg-white h-full rounded-xl">
           <div className="flex justify-center items-center gap-2">
             <div>
-              <FaPerson size={24}></FaPerson>
+              <FaPerson color="gray" size={24}></FaPerson>
             </div>
             <div>
               <input
@@ -117,7 +126,9 @@ const FindRoom = () => {
                   );
                 }}
                 placeholder="Nhập số người ở"
+                defaultValue={person! && person}
                 className="outline-none text-gray-400"
+                type="number"
               ></input>
             </div>
           </div>
@@ -130,7 +141,7 @@ const FindRoom = () => {
         <div className="w-[24%] flex gap-4 items-center px-[1rem] justify-between h-full rounded-xl">
           <ButtonBase
             text="Tìm phòng"
-            // isLoading={isLoadingFindRoom}
+            isLoading={isLoading}
             handleButton={handleFindRoomByCondition}
           ></ButtonBase>
         </div>

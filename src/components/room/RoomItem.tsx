@@ -2,7 +2,6 @@ import React from "react";
 import Image from "next/image";
 import logo from "../../assets/logo/logo.png";
 import formatNumberToPrice from "@/helpers/formatNumberToPrice";
-import { useAppSelector } from "@/hooks/reduxHook";
 const RoomItem = (room: { room: TRoom }) => {
   const imageUrl =
     typeof room?.room?.images[0] === "string" ? room?.room?.images[0] : logo;
@@ -14,8 +13,8 @@ const RoomItem = (room: { room: TRoom }) => {
           {room?.room?.district}
         </h3>
         <p className="text-gray-400">{room?.room?.title}</p>
-        <p className="font-semibold uppercase text-color-yellow-main text-[24px]">
-          {formatNumberToPrice(+room?.room?.price)} VNĐ
+        <p className="font-semibold uppercase text-color-yellow-main text-[22px]">
+          {formatNumberToPrice(+room?.room?.price)} VNĐ / tháng
         </p>
       </div>
       <div>

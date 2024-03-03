@@ -1,15 +1,17 @@
 "use client";
 import React from "react";
 import { Header, FindRoom } from "@/components";
-import { useGetListRooms } from "@/hooks/room/useGetListRooms";
 import ListRoom from "@/components/room/ListRoom";
+import ReasonChoose from "@/components/reasonChoose/ReasonChoose";
+import ContactFindRoom from "@/components/contactFindRoom/ContactFindRoom";
 const HomePage = () => {
-  const { rooms, isLoading } = useGetListRooms();
   return (
     <div className="w-full h-full">
       <Header />
       <FindRoom />
-      <ListRoom listRoom={rooms?.data} />
+      <ListRoom />
+      <ContactFindRoom />
+      <ReasonChoose />
     </div>
   );
 };

@@ -3,11 +3,13 @@ import { findRoomByConditionApi } from "@/apis/findRoomByCondition";
 export interface TRoomSlice {
   isLoading?: boolean;
   rooms?: TRoom[];
+  statusFindRoom?: boolean;
 }
 
 const initialState: TRoomSlice = {
   isLoading: false,
   rooms: [],
+  statusFindRoom: false,
 };
 
 export const doGetRoomByCondition = createAsyncThunk(
@@ -27,14 +29,18 @@ const roomSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(doGetRoomByCondition.pending, (state, action) => {
-      console.log("pending : ", action.payload);
+    builder.addCase(doGetRoomByCondition.pending, (state, _) => {
+      state.isLoading = true;
+      state.rooms = [];
     });
     builder.addCase(doGetRoomByCondition.fulfilled, (state, action) => {
-      state.rooms = action.payload;
+      state.isLoading = false;
+      state.statusFindRoom = action.payload ? true : false;
+      if (action.payload) state.rooms = action.payload;
     });
-    builder.addCase(doGetRoomByCondition.rejected, (state, action) => {
-      console.log("rejected : ", action.payload);
+    builder.addCase(doGetRoomByCondition.rejected, (state, _) => {
+      state.isLoading = false;
+      state.rooms = [];
     });
   },
 });

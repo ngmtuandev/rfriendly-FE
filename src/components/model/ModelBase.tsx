@@ -1,5 +1,5 @@
 "use client";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Modal, Slider } from "antd";
 import formatNumberToPrice from "@/helpers/formatNumberToPrice";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
@@ -22,24 +22,24 @@ const ModelBase: React.FC<ModelBaseProps> = ({
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const createQueryString = useCallback(
-    (name: string, value: string) => {
-      const params = new URLSearchParams(searchParams.toString());
-      params.set(name, value);
-
-      return params.toString();
-    },
-    [searchParams]
-  );
+  useEffect(() => {
+    const tu = parseInt(searchParams.get("tu") || "100000", 10);
+    const den = parseInt(searchParams.get("den") || "1000000", 10);
+    setMinPrice(tu);
+    setMaxPrice(den);
+  }, [searchParams]);
 
   const handleOk = () => {
     if (modelCurrent === "price") {
-      const queryString =
-        createQueryString("tu", minPrice.toString()) +
-        "&" +
-        createQueryString("den", maxPrice.toString());
-
-      router.push(pathname + "?" + queryString);
+      const params = new URLSearchParams();
+      searchParams.forEach((value, key) => {
+        if (key !== "tu" && key !== "den") {
+          params.append(key, value);
+        }
+      });
+      params.append("tu", minPrice.toString());
+      params.append("den", maxPrice.toString());
+      router.push(pathname + "?" + params.toString());
     }
     setIsModalOpen(false);
   };
@@ -70,7 +70,7 @@ const ModelBase: React.FC<ModelBaseProps> = ({
             </div>
             <Slider
               range
-              defaultValue={[minPrice, maxPrice]}
+              value={[minPrice, maxPrice]}
               min={10}
               max={10000000}
               onChange={([min, max]) => {
