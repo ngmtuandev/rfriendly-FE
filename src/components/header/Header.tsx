@@ -2,15 +2,16 @@ import React from "react";
 import Image from "next/image";
 import logo from "../../assets/logo/logo.png";
 import { icons } from "@/utils/icons";
+import Link from "next/link";
 
 const Header = () => {
   const { IoIosPhonePortrait, IoMdTime, MdOutlineEmail } = icons;
 
   return (
     <div className="flex w-[100%] text-gray-600 h-auto px-main items-center gap-32 border-b-[1px]">
-      <div>
+      <Link href={'/'}>
         <Image src={logo} alt="Mô tả hình ảnh" width={200} height={200} />
-      </div>
+      </Link>
       <div className="flex justify-center items-center gap-20">
         <div className="flex flex-col gap-4">
           <div className="flex items-center gap-2">
