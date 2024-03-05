@@ -132,11 +132,6 @@ const FindRoom = () => {
               ></input>
             </div>
           </div>
-          <div>
-            <MdOutlineKeyboardArrowRight
-              size={24}
-            ></MdOutlineKeyboardArrowRight>
-          </div>
         </div>
         <div className="w-[24%] flex gap-4 items-center px-[1rem] justify-between h-full rounded-xl">
           <ButtonBase

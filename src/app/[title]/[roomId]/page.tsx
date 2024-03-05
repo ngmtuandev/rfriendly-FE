@@ -13,6 +13,7 @@ import formatNumberToPrice from "@/helpers/formatNumberToPrice";
 import facilitiesRender from "@/helpers/facilitiesRender";
 import ListRoom from "@/components/room/ListRoom";
 import moment from "moment";
+import LoadingSpinner from "@/components/loading/LoadingSpinner";
 
 const DetailRoom = ({
   params,
@@ -73,6 +74,7 @@ const DetailRoom = ({
 
   return (
     <div>
+      {isLoadingGetDetail || isLoadingImageRoom || isLoadingTypeImage && <LoadingSpinner />}
       <Modal
         title="Hình ảnh phòng"
         open={isModalOpen}

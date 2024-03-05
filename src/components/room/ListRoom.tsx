@@ -4,6 +4,7 @@ import { useAppSelector } from "@/hooks/reduxHook";
 import Pagination from "@/hooks/Pagination";
 import { useGetListRooms } from "@/hooks/room/useGetListRooms";
 import IntroHeader from "../introHeader/IntroHeader";
+import LoadingSpinner from "../loading/LoadingSpinner";
 const ListRoom = () => {
   const [currentPage, setCurrentPage] = useState<number>(0);
 
@@ -19,6 +20,9 @@ const ListRoom = () => {
 
   return (
     <div className="px-main">
+      {
+        isLoading && <LoadingSpinner />
+      }
       <div>
         <IntroHeader title={"Phòng của chúng tôi"}></IntroHeader>
       </div>
